@@ -46,6 +46,12 @@ class UserController{
             </script>';
         }
     }
+
+    static public function sessionDataUser($id)
+    {
+        $dataUser = UserModel::dataUser($id);
+        return $dataUser;
+    }
     
 
 
