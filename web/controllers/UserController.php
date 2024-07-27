@@ -14,14 +14,12 @@ class UserController{
                 $id_user = $verificar['id_user'];
                 $rol = $verificar['fk_rol_id'];
                 $state = $verificar['state'];
-                $changed = $verificar['change_password'];
     
                 if ($state == 1) {
                     $_SESSION['state'] = $state;
                     $_SESSION['email'] = $mail_user;
                     $_SESSION['fk_rol_id'] = $rol;
                     $_SESSION['id_user'] = $id_user;
-                    $_SESSION['change_password'] = $changed;
     
     
                     echo '<script>
