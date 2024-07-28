@@ -3,7 +3,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <table id="example3" class="table table-bordered table-striped table-hover" style="width: 80%; margin: 0 auto;">
-                <thead class="bg-blue text-white">
+                <thead class="bg-yellow text-white">
                     <tr>
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Email</th>
@@ -55,7 +55,6 @@
     }
 } ?>
 <?php foreach ($dataUser as $user) : ?>
-    
     <!-- Modal de edición de usuario -->
     <div class="modal fade" id="editUserModal<?php echo $user['id_user']; ?>" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
