@@ -53,6 +53,249 @@ class UserController{
         return $dataUser;
     }
     
+    static public function newUser()
+    {
+        if ((!empty($_POST['name'])) && (!empty($_POST['mail'])) && 
+            (!empty($_POST['gender'])) && !empty($_POST['roles'])
+            
+        ) {
+
+            $name = ucwords(strtolower(trim($_POST['name'])));
+            if (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$/u", $name)) {
+                echo '<script>
+                    if (window.history.replaceState) {
+                        window.history.replaceState(null, null, window.location.href);
+                    }
+                    </script>
+                    <div class="col-sm-12 pt-3">
+                        <div class="d-flex justify-content-center align-items-center">             
+                            <div class="alert alert-danger mt-2">El nombre solo puede contener letras, espacios y tildes.</div>
+                        </div>
+                    </div>';
+                return;
+            }            
+
+            if (strlen($name) > 100) {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="col-sm-12 pt-3">
+                    <div class="d-flex justify-content-center align-items-center">             
+                        <div class="alert alert-danger mt-2">El nombre no puede tener más de 100 caracteres.</div>
+                    </div>
+                </div>';
+                return;
+            }
+
+            $email = strtolower(trim($_POST['mail']));
+            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+            if ($email === false) {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="col-sm-12 pt-3">
+                    <div class="d-flex justify-content-center align-items-center">             
+                        <div class="alert alert-danger mt-2">Email inválido.</div>
+                    </div>
+                </div>';
+                return;
+            }
+
+            if (strlen($email) > 100) {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="col-sm-12 pt-3">
+                    <div class="d-flex justify-content-center align-items-center">             
+                        <div class="alert alert-danger mt-2">El email no puede tener más de 100 caracteres.</div>
+                    </div>
+                </div>';
+                return;
+            }
+
+            $gender = $_POST['gender'];
+            $roles = $_POST['roles'];
+
+            $password = "probandoEntrenamiento";
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $checkCountEmail = UserModel::checkExistingEmail($email);
+            if ($checkCountEmail !== false) {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="col-sm-12 pt-3">
+                    <div class="d-flex justify-content-center align-items-center">             
+                        <div class="alert alert-danger mt-2">Ya existe el email.</div>
+                    </div>
+                </div>';
+            } else {
+                $execute = UserModel::newUser($name, $email, $hashedPassword, $roles, $gender);
+                if ($execute) {
+                    echo '<script>
+                    if (window.history.replaceState) {
+                        window.history.replaceState(null, null, window.location.href);
+                    }
+                    
+                    window.location="../index.php?pages=manageUser&subfolder=newUser&message=correcto";
+                    </script>
+                    <div class="col-sm-12 pt-3">
+                    <div class="d-flex justify-content-center align-items-center">             
+                        <div class="alert alert-succes mt-2">Se guardó el registro correctamente</div>
+                    </div>
+                </div>';
+                } else {
+                    echo '<script>
+                    if (window.history.replaceState) {
+                        window.history.replaceState(null, null, window.location.href);
+                    }
+                    window.location="../index.php?pages=manageUser&subfolder=newUser";
+                    </script>
+                    <div class="col-sm-12 pt-3">
+                        <div class="d-flex justify-content-center align-items-center">             
+                            <div class="alert alert-danger mt-2">Hubo un problema al crearlo</div>
+                        </div>
+                    </div>';
+                }
+            }
+        } else {
+            echo '<script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            </script>
+            <div class="col-sm-12 pt-3">
+                <div class="d-flex justify-content-center align-items-center">             
+                    <div class="alert alert-danger mt-2">Debes completar los campos</div>
+                </div>
+            </div>';
+        }
+    }
+
+    static public function getAllUser()
+    {
+        return UserModel::getAllUser();
+    }
+
+    static public function disableAccountUser()
+    {
+        if (isset($_GET['id_user'])) { 
+            $id = $_GET['id_user']; 
+            $execute = UserModel::disableUser($id); 
+
+            if ($execute) {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                
+                window.location="../index.php?pages=manageUser";
+                </script>
+                <div class="alert alert-success mt-2">Se deshabilitó la cuenta.</div>'; 
+            } else {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="alert alert-danger mt-2">No se pudo deshabilitar.</div>'; 
+            }
+        }
+    }
+
+    static public function enableAccountUser()
+    {
+        if (isset($_GET['id_user'])) { 
+            $id = $_GET['id_user']; 
+            $execute = UserModel::activateUser($id); 
+
+            if ($execute) {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                
+                window.location="../index.php?pages=manageUser&subfolder=listUser";
+                </script>
+                <div class="alert alert-success mt-2">Cuenta habilitada.</div>';
+            } else {
+                echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="alert alert-danger mt-2">No se pudo habilitar.</div>';
+            }
+        }
+    }
+
+    static public function editarUser()
+    {
+        $name = ucwords(strtolower(trim($_POST['name'])));
+
+        $roles = $_POST['roles'];
+        $id = $_POST['id_user'];
+        $gender = $_POST['gender'];
+        $email = strtolower(trim($_POST['mail']));
+        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        
+        if ($email === false) {
+            echo '<script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            </script>
+            <div class="col-sm-12 pt-3">
+                <div class="d-flex justify-content-center align-items-center">             
+                    <div class="alert alert-danger mt-2">Email inválido.</div>
+                </div>
+            </div>';
+            return;
+        }
+
+        $checkCountEmail = UserModel::checkExistingEmailWhileEditing($id, $email);
+        if ($checkCountEmail !== false) {
+            echo '<script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            </script>
+            <div class="col-sm-12 pt-3">
+                <div class="d-flex justify-content-center align-items-center">             
+                    <div class="alert alert-danger mt-2">Ya existe el email.</div>
+                </div>
+            </div>';
+            return;
+        }
+
+        $execute = UserModel::updateUserData($name, $roles, $id, $gender, $email);
+        if ($execute) {
+            echo '<script>
+                    if (window.history.replaceState) {
+                        window.history.replaceState(null, null, window.location.href);
+                    }
+
+                    window.location="../index.php?pages=manageUser&subfolder=listUser&message=correcto";
+                    </script>
+                    <div class="alert alert-succes mt-2">Se editó correctamente.</div>';
+        } else {
+            echo '<script>
+                    if (window.history.replaceState) {
+                        window.history.replaceState(null, null, window.location.href);
+                    }
+                    window.location="../index.php?pages=manageUser$subfolder=listUser";
+                    </script>
+                    <div class="alert alert-danger mt-2">Hubo un problema al editarlo.</div>';
+        }
+    }
 
 
 
