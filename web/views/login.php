@@ -56,15 +56,6 @@
             </div>
         </div>
         
-        <div class="container mt-4" id="password-note">
-            <div class="row justify-content-center">
-                <div class="col-md-11">
-                    <div class="alert alert-info text-center">
-                        <p class="mb-0"><b>NOTA: </b>Si es su primera vez ingresando, deberá cambiar la contraseña.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <script src="public/js/showEyePassword.js"></script>
         <script src="public/js/loginForm.js"></script>
