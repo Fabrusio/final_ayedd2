@@ -13,7 +13,7 @@ class MusclesController
 		}
 	}
 
-	public function allGendersSelect()
+	public function allMusclesSelect()
 	{
 
 		$muscles = MusclesModel::muscles();
