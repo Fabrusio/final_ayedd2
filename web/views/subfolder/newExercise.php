@@ -45,6 +45,10 @@
                                         ?>
                                     </select>
                                 </div>
+                                <div class="form-group px-2">
+                                    <label class="pt-1" for="explanation">Explicación</label>
+                                    <input type="text" maxlength="1000" class="form-control" name="explanation" placeholder="Ingrese un breve comentario" value="<?php echo isset($_POST['explanation']) ? htmlspecialchars($_POST['explanation']) : ''; ?>">
+                                </div>
                             </div>
                             <div class="col-sm-12 pt-3">
                                 <div class="d-flex justify-content-center align-items-center">
