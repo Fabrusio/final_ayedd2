@@ -21,6 +21,17 @@
             </div>
         </div>
     </section>
+
+    <div class="container mt-4" id="password-note">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alert alert-info text-center">
+                    <p class="mb-0"><b>NOTA: </b>Si es su primera vez ingresando, se recomienda cambiar la contraseña haciendo click en su nombre arriba a la derecha.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <?php endif; ?>
 
 <?php if ($_SESSION['fk_rol_id'] == 2) : ?>
@@ -37,7 +48,17 @@
                     <li>Eliminarlo en caso de que no caiga mas en su rutina.</li>
                 </ul>
             </div>
-
         </div>
+
     </section>
+    <div class="container mt-4" id="password-note">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alert alert-info text-center">
+                    <p class="mb-0"><b>NOTA: </b>Si es su primera vez ingresando, se recomienda cambiar la contraseña haciendo click en su nombre arriba a la derecha.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 <?php endif; ?>
