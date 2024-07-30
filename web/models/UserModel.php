@@ -199,6 +199,40 @@ class UserModel{
         $stmt = null;
     }
 
+    static public function getPassword($id)
+    {
+        $sql = "SELECT users.password AS password FROM users
+              WHERE id_user = ?";
+
+        $stmt = model_sql::connectToDatabase()->prepare($sql);;
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            print_r($stmt->errorInfo());
+        }
+
+        $stmt = null;
+    }
+
+    static public function updatePassword($id, $newPassword)
+    {
+
+        $sql = "UPDATE users SET password = ? WHERE id_user = ?";
+        $stmt = model_sql::connectToDatabase()->prepare($sql);
+
+        $stmt->bindParam(1, $newPassword, PDO::PARAM_STR);
+        $stmt->bindParam(2, $id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            print_r($stmt->errorInfo());
+        }
+
+        $stmt = null;
+    }
+
 }
 
 ?>

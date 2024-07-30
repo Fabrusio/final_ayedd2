@@ -324,7 +324,62 @@ class UserController{
         }
     }
 
+    static public function newPassword()
+    {
+        if (!empty($_POST['currentPassword']) && !empty($_POST['newPassword']) && !empty($_POST['confirmPassword'])) {
+            $currentPassword = $_POST['currentPassword'];
+            $newPassword = $_POST['newPassword'];
+            $confirmPassword = $_POST['confirmPassword'];
 
+            if ($newPassword !== $confirmPassword) {
+                echo '<div class="alert alert-danger mt-2">Las contraseñas nuevas no coinciden.</div>';
+                return;
+            }
+
+            if (strlen($newPassword) < 8) {
+                echo '<div class="alert alert-danger mt-2">La nueva contraseña debe tener al menos 8 caracteres.</div>';
+                return;
+            }
+
+            if(strlen($newPassword) > 100 || strlen($confirmPassword) > 100) {
+                echo '<div class="alert alert-danger mt-2">La contraseña no puede tener más de 100 caracteres.</div>';
+                return;
+            }
+
+            // Obtener la contraseña actual del usuario
+            $verifyPassword = UserModel::getPassword($_SESSION['id_user']);
+            $oldPassword = $verifyPassword['password'];
+
+            // Verificar si la contraseña actual es correcta
+            if (password_verify($currentPassword, $oldPassword)) {
+
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+                $result = UserModel::updatePassword($_SESSION['id_user'], $hashedPassword);
+
+                if ($result) {
+                    echo '<script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "Cambiada!",
+                        text: "La contraseña se ha cambiado.",
+                        confirmButtonText: "OK"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "index.php?pages=changePassword";
+                        }
+                    });
+                    </script>';
+                } else {
+                    echo '<div class="alert alert-danger mt-2">Error al actualizar la contraseña. Por favor, inténtalo de nuevo más tarde.</div>';
+                }
+            } else {
+                echo '<div class="alert alert-danger mt-2">La contraseña actual es incorrecta.</div>';
+            }
+        } else {
+            echo '<div class="alert alert-danger mt-2">Por favor, completa todos los campos.</div>';
+        }
+    }
 
 
 }
