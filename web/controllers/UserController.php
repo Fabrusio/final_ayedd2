@@ -240,6 +240,33 @@ class UserController{
     static public function editarUser()
     {
         $name = ucwords(strtolower(trim($_POST['name'])));
+        if (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$/u", $name)) {
+            echo '<script>
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+                </script>
+                <div class="col-sm-12 pt-3">
+                    <div class="d-flex justify-content-center align-items-center">             
+                        <div class="alert alert-danger mt-2">El nombre solo puede contener letras, espacios y tildes.</div>
+                    </div>
+                </div>';
+            return;
+        }            
+
+        if (strlen($name) > 100) {
+            echo '<script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            </script>
+            <div class="col-sm-12 pt-3">
+                <div class="d-flex justify-content-center align-items-center">             
+                    <div class="alert alert-danger mt-2">El nombre no puede tener más de 100 caracteres.</div>
+                </div>
+            </div>';
+            return;
+        }
 
         $roles = $_POST['roles'];
         $id = $_POST['id_user'];
