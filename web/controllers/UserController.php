@@ -318,7 +318,7 @@ class UserController{
                     if (window.history.replaceState) {
                         window.history.replaceState(null, null, window.location.href);
                     }
-                    window.location="../index.php?pages=manageUser$subfolder=listUser";
+                    window.location="../index.php?pages=manageUser&subfolder=listUser";
                     </script>
                     <div class="alert alert-danger mt-2">Hubo un problema al editarlo.</div>';
         }
