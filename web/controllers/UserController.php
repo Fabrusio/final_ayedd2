@@ -28,6 +28,18 @@ class UserController{
                     }
                     window.location="../index.php?pages=home";
                     </script>';
+                }elseif($state == 2){
+                    echo '<script>
+                    if (window.history.replaceState) {
+                        window.history.replaceState(null, null, window.location.href);
+                    }
+                    </script>
+                    <div class="col-sm-12 pt-3">
+                        <div class="d-flex justify-content-center align-items-center">             
+                            <div class="alert alert-danger mt-2">Tu cuenta está desactivada.</div>
+                        </div>
+                    </div>';
+                    return;
                 }
             } else {
                 echo '<script>
