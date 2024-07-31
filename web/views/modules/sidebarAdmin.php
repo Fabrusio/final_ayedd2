@@ -2,7 +2,7 @@
 
     <li class="nav-item mb-1">
         <a href="index.php?pages=manageExercise" class="nav-link">
-            <i class="fas fa-user-graduate nav-icon"></i>
+            <i class="fas fa-dumbbell nav-icon"></i>
             <p>Ejercicios</p>
         </a>
     </li>
